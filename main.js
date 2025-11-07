@@ -84,9 +84,7 @@ function weatherBalloon( cityID ) {
         let celcius = Math.round(parseFloat(data.main.temp)-273.15);
         
         // Use the specific IDs from your HTML
-        getId("description").innerHTML = data.weather[0].description;
-        getId("temp").innerHTML = celcius + "&deg;C"; // Use the degree symbol
-        getId("location").innerHTML = data.name;
+               getId("weather").innerHTML = "Todays weather in " + data.name + " is " + data.weather[0].description + " with a temp of " + celcius + "&deg C"; 
     });
 }
 
