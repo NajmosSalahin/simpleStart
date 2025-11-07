@@ -21,10 +21,12 @@ function delay(time)
 }
 
 
-function twelveHour(a){
-    if (a > 12){
+function twelveHour(a){ // a is 0-23
+    if (a === 0) {        // Midnight
+        return 12;
+    } else if (a > 12) {  // 1 PM (13) to 11 PM (23)
         return a - 12;
-    } else if (a < 12) {
+    } else {              // 1 AM (1) to 12 PM (12)
         return a;
     }
 }
@@ -38,7 +40,7 @@ function wordDay(int) {
         case 4: return "THU";
         case 5: return "FRI";
         case 6: return "SAT";
-        }
+    }
 }
 
 function date()
@@ -55,19 +57,22 @@ function date()
 
 function welcomeMessage() {
     var today = new Date();
-    var h = today.getHours() + 1;
-    var userName = "USERNAME";
+    var h = today.getHours(); // <-- Removed the "+ 1"
+    var userName = "Adib";
     var message = String();
-    if (h <= 12 && h >= 6){
+
+    // h is 0 (midnight) to 23 (11 PM)
+    if (h >= 5 && h < 12) {         // 5:00 AM - 11:59 AM
         message = "Good Morning, ";
-    } else if (h > 12 && h <= 21){
-        message = "Good evening, ";
-    } else if (h > 21 || (h < 6 && h > 12)) {
-        message = "Go to sleep, "
-    } else {
-        message = "Hello, ";
+    } else if (h >= 12 && h < 18) { // 12:00 PM - 5:59 PM
+        message = "Good Afternoon, ";
+    } else if (h >= 18 && h < 22) { // 6:00 PM - 9:59 PM
+        message = "Good Evening, ";
+    } else {                        // 10:00 PM - 4:59 AM
+        message = "Go to sleep, ";
     }
-    message = message + "<span class='name'>" + userName +"</span>";
+
+    message = message + "<span class='name'>" + userName + "</span>";
     document.getElementById("welcome").innerHTML = message;
 }
 
@@ -77,7 +82,11 @@ function weatherBalloon( cityID ) {
     .then(function(resp) { return resp.json() })
     .then(function(data) {
         let celcius = Math.round(parseFloat(data.main.temp)-273.15);
-        getId("weather").innerHTML = "Todays weather in " + data.name + " is " + data.weather[0].description + " with a temp of " + celcius + "&deg C"; 
+        
+        // Use the specific IDs from your HTML
+        getId("description").innerHTML = data.weather[0].description;
+        getId("temp").innerHTML = celcius + "&deg;C"; // Use the degree symbol
+        getId("location").innerHTML = data.name;
     });
 }
 
